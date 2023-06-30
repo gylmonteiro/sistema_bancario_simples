@@ -5,7 +5,8 @@ def menu():
         DIGITE (S) PARA SACAR\
         DIGITE (CC) PARA CRIAR CONTA\
         DIGITE (C) PARA CRIAR USUARIO\
-        DIGITE (D) PARA DEPOSITAR
+        DIGITE (D) PARA DEPOSITAR\
+        DIGITE (L) PARA LISTAR USUARIOS
     """
 
     funcao = input(menu).upper()
@@ -105,12 +106,35 @@ def verificar_usuario(cpf, lista_usuarios):
         return False
 
 
+def criar_conta(agencia, conta, lista_usuarios):
+    cpf = input("Digite seu CPF: ")
+    validacao = verificar_usuario(cpf, lista_usuarios)
+    if validacao:
+        for usuario in lista_usuarios:
+            if usuario["cpf"] == cpf:
+                usuario["conta"] = conta + 1
+                usuario["agencia"] = agencia
+                conta += 1
+
+        return agencia, conta, lista_usuarios
+    else:
+        print("Usuário não cadastrado.\nPrimeiro crie um usuário para vincular em uma conta na opção (C)")
+        return agencia, conta, lista_usuarios
+
+
+def listar_usuarios(lista_usuarios):
+    for usuario in lista_usuarios:
+        print(usuario)
+
+
 def main():
     lista_usuarios = []
     extrato = []
     saldo = 0
     numero_deposito = 0
     numero_saque = 0
+    agencia = "0001"
+    conta = 0
     while True:
 
         funcao = menu()
@@ -126,8 +150,16 @@ def main():
             lista_usuarios = criar_usuario(lista_usuarios)
 
         elif funcao == "S":
+
             extrato, saldo, numero_saque, lista_usuarios = sacar(
                 extrato, saldo, numero_saque, lista_usuarios)
+
+        elif funcao == "CC":
+            agencia, conta, lista_usuarios = criar_conta(
+                agencia, conta, lista_usuarios)
+
+        elif funcao == "L":
+            listar_usuarios(lista_usuarios)
 
         elif funcao == "Q":
             print("Obrigado por utilizar nosso sistema")
