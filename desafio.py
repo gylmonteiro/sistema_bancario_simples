@@ -19,8 +19,10 @@ def depositar(extrato, saldo, numero_deposito, lista_usuarios):
         valor = float(input("Digite o valor do deposito: "))
 
         saldo += valor
-        numero_deposito += 1
-        extrato[f"deposito_{numero_deposito}"] = f"R$ {valor:.2f}"
+        # numero_deposito += 1
+        extrato.append(
+            {f"deposito": f"R$ {valor:.2f}", "cpf": cpf})
+
         return extrato, saldo, numero_deposito, lista_usuarios
     else:
         print("Usuário não localizado.\nCrie primeiramente um usuário na opção C")
@@ -43,7 +45,8 @@ def sacar(extrato, saldo, numero_saque, lista_usuarios):
         elif valor < saldo:
             saldo -= valor
             numero_saque += 1
-            extrato[f"saque_{numero_saque}"] = f"R$ {valor:.2f}"
+            extrato.append(
+                {f"saque": f"R$ {valor:.2f}", "cpf": cpf})
             return extrato, saldo, numero_saque, lista_usuarios
         else:
             print("Valor acima do saldo na conta")
@@ -55,7 +58,7 @@ def sacar(extrato, saldo, numero_saque, lista_usuarios):
 
 
 def emitir_extrato(extrato, saldo):
-    print(f"EXTRATO: {extrato} | SALDO: {saldo}")
+    print(f"EXTRATO: {extrato} | SALDO TOTAL BANCO: {saldo}")
 
 
 def criar_usuario(lista_usuarios):
@@ -104,7 +107,7 @@ def verificar_usuario(cpf, lista_usuarios):
 
 def main():
     lista_usuarios = []
-    extrato = {}
+    extrato = []
     saldo = 0
     numero_deposito = 0
     numero_saque = 0
